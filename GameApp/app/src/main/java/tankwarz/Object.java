@@ -37,14 +37,14 @@ public class Object
                 && y >= gp.getTank().getY() && y <= (gp.getTank().getY()+gp.getTank().getHeight()))
     {
         System.out.println("Tank is hit");
-        System.exit(0);
+    //System.exit(0);
     }
         if (x >= gp.getAitank().getX() && x <= (gp.getAitank().getX()+gp.getAitank().getWidth())
                 && y >= gp.getAitank().getY() && y <= (gp.getAitank().getY()+gp.getAitank().getHeight()))
         {
 
             System.out.println("Enemy tank is hit");
-            System.exit(0);
+     // System.exit(0);
         }
 
         x+=xspeed;

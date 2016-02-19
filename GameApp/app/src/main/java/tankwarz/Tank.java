@@ -23,11 +23,10 @@ public class Tank extends Object {
     private float releaseTouchY;
     private boolean whileFlying;
     private boolean onTouch;
-    //creates canon
 
 
 
-    //Handles the loop of having touch point down
+    //Handles the loop of the touch down.
     Runnable runnable = new Runnable() {
 
         public void run()
@@ -66,7 +65,7 @@ public class Tank extends Object {
 
     public void move()
     {
-        // Draw out the tank figure, giving it values like x, y, width, height
+        // Draw out the tank figure, giving it values like x, y, width, height.
         setSize(new RectF(getX(), getY(), getX() + getWidth(), getY() + getHeight()));
 
         getGamePanel().setOnTouchListener(new View.OnTouchListener()
@@ -75,13 +74,13 @@ public class Tank extends Object {
             {
 
 
-
+//If the finger is pressed down.
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
                 {
 
 
 
-                    //Move the tank to right
+                    //Move the tank to right.
                     if (event.getX() > getX()+150 && event.getY() > 600 && event.getY() < 700
                                 && getX() <= 500)
                     {
@@ -91,7 +90,7 @@ public class Tank extends Object {
 
                     }
 
-                    //Move the tank to left
+                    //Move the tank to left.
                     if (event.getX() < getX() && event.getY() > 600 && event.getY() < 700
                                 && getX() >= 50)
                     {
@@ -101,33 +100,41 @@ public class Tank extends Object {
                     }
 
 
-                    //If touch is pressed left or right of the tank
+
+                    //This statement can only be accessed if you press on the tank and when boolean is false
+                    //The reason why the boolean is false, is because to check if a projectile is already launched
+                    //From the human tank.
+
                     if (event.getX() > getX() && event.getX() < getX()+150
                             && whileFlying == false)
                     {
-                        //Identify the cordination of x and y of touch point
+
+                        //Identify the first cordinations of x and y of touch point.
                         startTouchX = event.getX();
                         startTouchY = event.getY();
 
 
-                        //Sets boolean value to true, when touching
+                        //Sets boolean value to true, to be able to access the touch release statement.
                         onTouch = true;
                         return true;
                     }
 
                 }
-                // If the touch is released
+                // The touch release statement that can only be accessed by previous statement from touch down.
+                // Can't be accessed if whileFlying is true (when the projectile is flying)
                 if (event.getAction() == MotionEvent.ACTION_UP && whileFlying == false
                         && onTouch == true)
 
                 {
-                    //Sets boolean values to access the method in gamepanel
+
+                    //Sets boolean value to true to access the method in gamepanel,
+                    //Which creates the projectile
                     whileFlying = true;
 
-
-                    //boolean that moves the ai tank
+                    //Boolean that activates the movement of the artificial tank.
                     getGamePanel().setMoveThatTank(true);
-                    //Release point cordination
+
+                    //Touch release point cordinations.
                     releaseTouchY = event.getY();
                     releaseTouchX = event.getX();
 
@@ -135,14 +142,17 @@ public class Tank extends Object {
                     calcDistanceY = startTouchY - releaseTouchY;
                     calcDistanceX = startTouchX - releaseTouchX;
 
-                   //Creates the canon object and in gamepanel, the characteristics are applied
+                   //Creates the canon object and in game panel, the characteristics are applied.
                     getGamePanel().getObject().add(new Canon(getX() + 155, getY() + 25, getGamePanel()));
                     getGamePanel().getObject().get(0).setYspeed((int) calcDistanceY);
+
+                    //Sets onTouch to false, so that we lock ourselves out of this method.
+
                     onTouch = false;
                 }
 
 
-                //Cancel automatic tank move
+                //Cancel automatic tank move if touch is released
                 if (event.getAction() == MotionEvent.ACTION_UP)
                 {
                     handler.removeCallbacks(runnable);

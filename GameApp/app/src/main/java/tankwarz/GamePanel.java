@@ -47,20 +47,22 @@ public class GamePanel extends View implements Runnable
     //Create objects with canvas
     public void onDraw(Canvas canvas)
     {
-//Shoot if the value whileflying in tank class is TRUE
+//The human tank shoots a projectile. The value turns true and false at the end of the method.
 
         if(tank.isWhileFlying() == true)
         {
             for(int i = 0; i < object.size(); i++) {
 
-            //Here the object is given value. That means for all object Objects.
-            canvas.drawOval(object.get(i).getSize(), object.get(i).getColor());
-            object.get(i).setXspeed((int) getTank().getCalcDistanceX());
-            object.get(i).setYspeed(object.get(i).getYspeed() + 10);
-            object.get(i).move();
+            //Creates the objects in a loop, in this case the projectiles.
 
-            //Remove objects from the vector list and sets whileflying to FALSE
-            if (1920 < object.get(i).getX() || 0 > object.get(i).getX()
+                canvas.drawOval(object.get(i).getSize(), object.get(i).getColor());
+                object.get(i).setXspeed((int) getTank().getCalcDistanceX());
+                object.get(i).setYspeed(object.get(i).getYspeed() + 10);
+                object.get(i).move();
+
+            //Remove objects from the vector list after it reaches a certain range and set boolean method to false
+
+                if (1920 < object.get(i).getX() || 0 > object.get(i).getX()
                     || object.get(i).getY() > 1080) {
                 object.remove(i);
                 tank.setWhileFlying(false);
@@ -68,9 +70,13 @@ public class GamePanel extends View implements Runnable
         }
         }
 
-        //Object created from the robot tank
+        //The canon created by the artificial tank.
+
         for(int i = 0; i < aiobject.size(); i++) {
-            //Here the object is given value. That means for all object Objects.
+
+            //The object is created here and gravity is added to it in the second line.
+            //There is a boolean method that controls the fire of the artificial tank.
+
             canvas.drawOval(aiobject.get(i).getSize(), aiobject.get(i).getColor());
             aiobject.get(i).setYspeed(aiobject.get(i).getYspeed() + 10);
             aiobject.get(i).move();
@@ -85,7 +91,7 @@ public class GamePanel extends View implements Runnable
             }
         }
 
-        //draw the pictures that are given in resources
+        //Draw the pictures that are given in resources.
         canvas.drawBitmap(tank.getTankImg(), null, tank.getSize(), tank.getColor());
         tank.move();
         canvas.drawBitmap(aitank.getTankImg(), null, aitank.getSize(), aitank.getColor());
@@ -93,7 +99,7 @@ public class GamePanel extends View implements Runnable
     }
 
 
-//Gameloop
+//The game loop.
     public void run()
     {
 
@@ -121,14 +127,18 @@ public class GamePanel extends View implements Runnable
     }
 
 
+
     public Vector<Canon> getAiobject() {
         return aiobject;
     }
 
 
+
     public boolean isMoveThatTank() {
         return moveThatTank;
     }
+
+
 
     public void setMoveThatTank(boolean moveThatTank) {
         this.moveThatTank = moveThatTank;

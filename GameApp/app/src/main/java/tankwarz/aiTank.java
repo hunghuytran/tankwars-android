@@ -14,7 +14,6 @@ public class aiTank extends Object {
     private Bitmap tankImg;
     private int randomDirection;
     private boolean onRun = true;
-    private boolean onRunLimit;
     private int randomTravel;
 
 
@@ -37,8 +36,11 @@ public class aiTank extends Object {
 
 
     public void move() {
+
         setSize(new RectF(getX(), getY(), getX() + getWidth(), getY() + getHeight()));
-// Autoloop and moves if while flying == true but also if projectile of HUMAN TANK is near object AITANK
+
+// If human projectile travels within an area of the artificial tank then move it at random direction.
+
          if(getGamePanel().getTank().isWhileFlying() == true
                  && getGamePanel().getObject().get(0).getX() > getX()-300
                  && getGamePanel().getObject().get(0).getX() < getX()+300
@@ -47,16 +49,19 @@ public class aiTank extends Object {
         {
             setX(getX() + getXspeed());
         }
-        // Sets xspeed to 0 if it's within a certain range
+
+//Sets the x speed to 0 if artificial tank goes out range, x = 1000 or x = 1600.
+
         if(getX() < 1000 || getX() > 1600)
         {
             setXspeed(0);
         }
 
-//Shoots auto! + move
+//Makes a loop as long as the boolean value is true. Projectile shoots automatic.
 
         if (onRun == true) {
-            //sets onRun to false so that only one projectile can be shot at once.
+
+            //Sets onRun to false so that artificial tank can't access the statement before the projectile is gone.
             onRun = false;
             randomDirection = ThreadLocalRandom.current().nextInt(-100, -10);
             getGamePanel().getAiobject().add(new Canon(getX() - 10, getY() + 25, getGamePanel()));
@@ -64,7 +69,7 @@ public class aiTank extends Object {
             getGamePanel().getAiobject().get(0).setYspeed(randomDirection);
 
 
-            //Goes to a method that doesn't loop if MoveThatTank = true( gets activated when human release his projectile)
+            //If a human projectile is launched then the artificial tank will move to a method outside of a loop
             if (getGamePanel().isMoveThatTank() == true) {
                 moveTank();
                 getGamePanel().setMoveThatTank(false);
@@ -73,23 +78,27 @@ public class aiTank extends Object {
         }
     }
 
-    //Returns an xspeed to the robot tank.
+
+    //The method to decide which direction the artificial tank will move.
     public void moveTank()
     {
+        //Random number from -10 to 10.
         randomTravel = ThreadLocalRandom.current().nextInt(-10, 10);
 
-
-        //Sets the speed of moving
+        //If randomTravel is bigger than 0 then move to right, else if less than 0 move to the left.
         if(randomTravel > 0)
         {
             randomTravel = 6;
         }
+
         if(randomTravel < 0)
         {
             randomTravel = -6;
         }
         setXspeed(randomTravel);
     }
+
+
 
     public void setOnrun(boolean onRun)
     {
